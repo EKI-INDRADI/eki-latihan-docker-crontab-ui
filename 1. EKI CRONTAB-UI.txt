@@ -1,0 +1,56 @@
+// ================================ DOCKER CONTAB
+reference : 
+https://hub.docker.com/r/alseambusher/crontab-ui
+https://github.com/alseambusher/crontab-ui
+
+mkdir -p /home/CRON_FILES
+chmod 777 -Rv /home/CRON_FILES
+
+docker pull alseambusher/crontab-ui
+
+docker container create --name crontab_8084 \
+--restart=always  \
+-it  \
+-e BASIC_AUTH_USER=ekiuser \
+-e BASIC_AUTH_PWD=ekipassword \
+-v /home/CRON_FILES:/crontab-ui/CRON_FILES \
+-p 8084:8000 \
+alseambusher/crontab-ui
+
+docker container start crontab_8084 
+docker container logs crontab_8084 
+
+<ip>:8084
+username : ekiuser
+password : ekipassword
+
+docker exec -u 0 -it crontab_8084  /bin/sh
+chmod 777 -Rv /crontab-ui/CRON_FILES
+
+// ============================= SCRIPT EXAMPLE
+curl -X POST -H "Content-Type: application/json" -d '{}' http://hostname/resource
+curl -H "Accept: application/xml" -H "Content-Type: application/xml" -X GET http://hostname/resource
+curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://hostname/resource
+
+node ./CRON_FILES/nodejs_script/ekitesting.js
+./CRON_FILES/bash_script/ekitesting.sh
+// ============================= /SCRIPT EXAMPLE
+
+// ============================= CRON EXAMPLE
+
+referensi : https://crontab.guru/
+referensi : https://www.niagahoster.co.id/blog/cron-job/
+
+Perintah	Arti
+0 7 * * * /root/backup.sh	Melakukan backup setiap pukul 7 pagi setiap hari.
+20-50/10 11 * * * /home/user/script.sh	Menjalankan script sepuluh menit sekali dari jam 11.20 hingga 11.50 setiap hari.
+* * * 1,2,5 *  /bin/script.sh	Menjalankan script setiap hari di bulan Januari, Februari, dan Mei. 
+0 6,18 * * * /bin/backup.sh	Melakukan backup setiap hari pada pukul 6 pagi dan 6 malam.
+0 8 1 */3 * /home/user/script.sh	Menjalankan script di tanggal pertama setiap tiga bulan pada pukul 8 pagi.
+* * 5L * * /root/script.sh	Menjalankan script setiap hari Jumat terakhir setiap bulannya.
+* * 3#5 7 * /root/backup.sh	Melakukan backup setiap hari rabu di minggu ke lima setiap bulan Juli.
+// ============================= /CRON EXAMPLE
+
+
+
+// ================================ /DOCKER CONTAB
